@@ -1,14 +1,16 @@
 name: deepTools
 channels:
   - pytorch
+  - nvidia
   - conda-forge
 dependencies:
   - python=3.8
   - numpy>=1.21.6,<1.28.0
   - mrcfile
   - scipy>=1.8.0,<1.11.0
-  - pytorch=2.0.0  # ensure CUDA 11.7 support as needed
+  - pytorch=2.0.0
   - torchvision=0.15.1
+  - pytorch-cuda=11.7
   - pip
   - pip:
       - torchmetrics

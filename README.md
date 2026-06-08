@@ -23,7 +23,7 @@ cd deepTools
 conda env create -f deepTools/environment.yml
 ```
 
-This creates an environment called `deepTools` with Python 3.8, PyTorch 2.0, and all required dependencies.
+This creates an environment called `deepTools` with Python 3.8, PyTorch 2.0, CUDA 11.7 support, and all required dependencies.
 
 ### Step 3: Activate and install
 
@@ -40,9 +40,24 @@ The `-e` (editable) flag links the package to the source directory, so code chan
 python -m deepTools.infer --help
 ```
 
+### GPU support (CUDA)
+
+The conda environment installs PyTorch with CUDA 11.7 support automatically. If you see errors like `libcuda.so: cannot open shared object file` or `libcudnn_cnn_infer.so.8`, make sure NVIDIA drivers are installed on the machine (`nvidia-smi` should work) and reinstall PyTorch with CUDA:
+
+```bash
+conda activate deepTools
+conda install pytorch=2.0.0 torchvision=0.15.1 pytorch-cuda=11.7 -c pytorch -c nvidia
+```
+
+If no GPU is available, you can always use the `--cpu` flag:
+
+```bash
+deepTools --map input.mrc --mode locres --o output.mrc --cpu
+```
+
 ### Alternative: pip only (without conda)
 
-If you prefer not to use conda, you can install directly with pip (a working PyTorch installation is required):
+If you prefer not to use conda, install PyTorch with CUDA support first (see [pytorch.org](https://pytorch.org/get-started/locally/)), then:
 
 ```bash
 git clone https://github.com/mauromaiorca/deepTools.git
