@@ -34,7 +34,27 @@ pip install -e .
 
 The `-e` (editable) flag links the package to the source directory, so code changes and `git pull` updates take effect immediately without reinstalling.
 
-### Step 4: Verify the installation
+### Step 4: Configure the models directory
+
+```bash
+deepTools_setup
+```
+
+This asks for the path to the directory containing the pre-trained `.pth` model files and saves it to `~/.deeptools_config.json`. You only need to run this once per machine.
+
+You can also configure it via environment variable instead:
+
+```bash
+export DEEPTOOLS_MODELS_DIR=/path/to/learning_models
+```
+
+Or pass it per-run:
+
+```bash
+deepTools --models_dir /path/to/learning_models --map input.mrc --mode locres --o output.mrc
+```
+
+### Step 5: Verify the installation
 
 ```bash
 python -m deepTools.infer --help
@@ -146,6 +166,7 @@ python -m deepTools.infer --restoreWedge --model /path/to/test_model.pth --map i
 | `--patch` | Enable patch-based inference to reduce memory usage |
 | `--config PATH` | Use a custom inference configuration file |
 | `--model PATH` | Override the model file for any mode |
+| `--models_dir DIR` | Base directory for model files (overrides env var and config) |
 
 ### Map processing
 
@@ -186,6 +207,7 @@ After installation, the following commands are available:
 | `deepTools_train` | Train a model (`deepTools.train:main`) |
 | `deepTools_map_process` | Map processing utilities (`deepTools.map_processing:main`) |
 | `deepTools_model_process` | Model processing utilities (`deepTools.model_processing:main`) |
+| `deepTools_setup` | Configure the models directory (`deepTools.setup_config:main`) |
 
 ## Configuration
 

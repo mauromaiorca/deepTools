@@ -14,13 +14,37 @@ from .utils import read_mrc_header, save_mrc_image, load_mrc_file, get_pixel_spa
 
 
 DEFAULT_RESTORE_WEDGE_MODEL = os.path.join("mapSharp_47", "learning_model_mapSharp_47.pth")
+USER_CONFIG_PATH = os.path.expanduser("~/.deeptools_config.json")
 
 
-def resolve_existing_path(path, config_path=None):
+def get_models_dir(cli_models_dir=None):
+    """Return the models base directory from CLI, env var, or user config."""
+    if cli_models_dir:
+        return os.path.abspath(os.path.expanduser(cli_models_dir))
+    env = os.environ.get("DEEPTOOLS_MODELS_DIR")
+    if env:
+        return os.path.abspath(os.path.expanduser(env))
+    if os.path.exists(USER_CONFIG_PATH):
+        try:
+            with open(USER_CONFIG_PATH, "r") as f:
+                cfg = json.load(f)
+            d = cfg.get("models_dir")
+            if d:
+                return os.path.abspath(os.path.expanduser(d))
+        except (json.JSONDecodeError, OSError):
+            pass
+    return None
+
+
+def resolve_existing_path(path, config_path=None, models_dir=None):
     """Resolve a model/config path from common runtime locations.
 
-    Relative paths are tried against the current working directory, the config
-    directory, the package directory, and the parent of the package directory.
+    Search order for relative paths:
+      1. models_dir (from --models_dir, $DEEPTOOLS_MODELS_DIR, or ~/.deeptools_config.json)
+      2. current working directory
+      3. config file directory
+      4. package directory
+      5. parent of the package directory
     The first existing path is returned. If none exists, the original path is
     returned so the caller can report a clear error.
     """
@@ -31,6 +55,10 @@ def resolve_existing_path(path, config_path=None):
     if os.path.isabs(path):
         candidates.append(path)
     else:
+        if models_dir:
+            basename = os.path.basename(path)
+            candidates.append(os.path.abspath(os.path.join(models_dir, path)))
+            candidates.append(os.path.abspath(os.path.join(models_dir, basename)))
         candidates.append(os.path.abspath(path))
         if config_path:
             candidates.append(os.path.abspath(os.path.join(os.path.dirname(config_path), path)))
@@ -175,10 +203,17 @@ def main():
         action="store_true",
         help="Enable patch-based inference: the input is processed in patches to reduce memory usage."
     )
+    parser.add_argument(
+        "--models_dir",
+        default=None,
+        help="Base directory for model files. Overrides DEEPTOOLS_MODELS_DIR and ~/.deeptools_config.json."
+    )
     args = parser.parse_args()
 
     if args.restoreWedge:
         args.mode = "restoreWedge"
+
+    models_dir = get_models_dir(args.models_dir)
 
     # Determine configuration file location.
     if args.config:
@@ -224,12 +259,14 @@ def main():
     postprocessing = mode_config.get("postprocessing", "").strip()
     preprocessing = mode_config.get("preprocessing", "").strip()
 
-    model_path = resolve_existing_path(model_path, config_path=config_path)
+    model_path = resolve_existing_path(model_path, config_path=config_path, models_dir=models_dir)
 
     if not model_path or not os.path.exists(model_path):
         print(f"Model file not found: {model_path}")
-        print("Default restoreWedge model expected at: mapSharp_47/learning_model_mapSharp_47.pth")
-        print("You can override it with: --model /path/to/model.pth")
+        if models_dir:
+            print(f"Models directory: {models_dir}")
+        print("To configure the models directory, run: deepTools_setup")
+        print("Or use: --models_dir /path/to/dir  or  --model /path/to/model.pth")
         return
 
     # Set up device.

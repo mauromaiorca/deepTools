@@ -17,7 +17,8 @@ setup(
             'deepTools=deepTools.infer:main',
             'deepTools_train=deepTools.train:main',
             'deepTools_map_process=deepTools.map_processing:main',
-            'deepTools_model_process=deepTools.model_processing:main'
+            'deepTools_model_process=deepTools.model_processing:main',
+            'deepTools_setup=deepTools.setup_config:main'
         ]
     },
     install_requires=[
