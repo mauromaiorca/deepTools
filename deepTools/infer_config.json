@@ -1,0 +1,63 @@
+{
+    "locres": {
+        "model_path": "learning_models/learning_model_deepLocres_102_randomPatch.pth",
+        "preprocessing": "",
+        "postprocessing": " --reciprocal_density --multiply_by_pixel_spacing ",
+        "description": "locres estimation"
+    },
+    "locres_old": {
+        "model_path": "learning_models/learning_model_mapSharp_39_epoch270.pth",
+        "preprocessing": "",
+        "postprocessing": "--invert_resolution --multiply_by_pixel_spacing",
+        "description": "locres estimation"
+    },
+    "denoise": {
+        "model_path": "learning_models/learning_model_mapSharp_45_39Patched_epoch60.pth",
+        "preprocessing": "",
+        "postprocessing": "",
+        "description": "denoise volume"
+    },
+    "maskT": {
+        "model_path": "learning_models/learning_model_mapMask_101_epoch42.pth",
+        "preprocessing": "",
+        "postprocessing": "",
+        "description": "mask estimation"
+    },
+    "mask": {
+        "model_path": "learning_models/learning_model_mapSharp_35.pth",
+        "preprocessing": "",
+        "postprocessing": " --smooth 1.5 --threshold 0.2 --smooth 1 --threshold 0.9 ",
+        "description": "mask threshold"
+    },
+    "maskOksh": {
+        "model_path": "learning_models/learning_model_mapSharp_35.pth",
+        "preprocessing": "",
+        "postprocessing": " --smooth 1.5 --threshold 0.2 --smooth 1 --threshold 0.9 ",
+        "description": "mask threshold"
+    },
+    "sharp": {
+        "model_path": "learning_models/learning_model_mapSharp_46_epoch55.pth",
+        "preprocessing": "",
+        "postprocessing": "",
+        "description": "deep sharp"
+    },
+    "tomoSharp": {
+        "model_path": "learning_models/learning_model_mapSharp_49AAAAA.pth",
+        "preprocessing": "--invert_density",
+        "postprocessing": "",
+        "description": "tomo sharp"
+    },
+    "tomoSharpOk": {
+        "model_path": "learning_models/learning_model_mapSharp_48B.pth",
+        "preprocessing": "--invert_density",
+        "postprocessing": "",
+        "description": "tomo sharp"
+    },
+    "simulate": {
+        "model_path": "learning_models/learning_model_mapSharp_52_H2_epoch120.pth",
+        "preprocessing": " --normalize --add_gaussian_noise 0.4 --smooth 0.5 --normalize --add_gaussian_noise 0.2  ",
+        "postprocessing": "",
+        "description": "simulation"
+    }
+}
+

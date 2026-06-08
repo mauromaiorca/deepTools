@@ -127,7 +127,7 @@ def main():
         "--mode", 
         required=False, 
         default="locres",
-        choices=["locres", "mask", "denoise", "sharp", "tomoSharp", "simulate", "restoreWedge"],
+        choices=["locres", "locres_old", "mask", "maskT", "maskOksh", "denoise", "sharp", "tomoSharp", "tomoSharpOk", "simulate", "restoreWedge"],
         help="Select the inference mode to use (e.g. 'locres', 'mask' or 'restoreWedge')."
     )
     parser.add_argument(

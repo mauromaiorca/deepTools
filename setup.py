@@ -10,7 +10,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     package_data={
-        'deeplocres': ['infer_config.json']
+        'deepTools': ['infer_config.json', 'environment.yml']
     },
     entry_points={
         'console_scripts': [

@@ -10,7 +10,17 @@ A Python package for cryo-EM map processing with deep learning. Includes tools f
 - PyTorch 2.0
 - CUDA-capable GPU (recommended; CPU fallback available)
 
-### Install from source
+### Option A: conda environment (recommended)
+
+```bash
+git clone https://github.com/mauromaiorca/deepTools.git
+cd deepTools
+conda env create -f deepTools/environment.yml
+conda activate deepTools
+pip install -e .
+```
+
+### Option B: pip only
 
 ```bash
 git clone https://github.com/mauromaiorca/deepTools.git
@@ -18,9 +28,7 @@ cd deepTools
 pip install -e .
 ```
 
-This installs the package in editable mode along with all dependencies listed in `setup.py`.
-
-### Install from GitHub directly
+### Install from GitHub directly (no clone)
 
 ```bash
 pip install git+https://github.com/mauromaiorca/deepTools.git
@@ -30,6 +38,22 @@ pip install git+https://github.com/mauromaiorca/deepTools.git
 
 ```bash
 python -m deepTools.infer --help
+```
+
+### Model files
+
+Pre-trained model weights (`.pth` files) must be placed in the `learning_models/` directory at the repository root. The inference configuration (`infer_config.json`) references them via relative paths, so the expected layout is:
+
+```
+deepTools/
+  deepTools/
+    infer.py
+    infer_config.json
+    ...
+  learning_models/
+    learning_model_deepLocres_102_randomPatch.pth
+    learning_model_mapSharp_49AAAAA.pth
+    ...
 ```
 
 ## Usage
