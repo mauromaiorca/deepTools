@@ -10,17 +10,39 @@ A Python package for cryo-EM map processing with deep learning. Includes tools f
 - PyTorch 2.0
 - CUDA-capable GPU (recommended; CPU fallback available)
 
-### Option A: conda environment (recommended)
+### Step 1: Clone the repository
 
 ```bash
 git clone https://github.com/mauromaiorca/deepTools.git
 cd deepTools
+```
+
+### Step 2: Create the conda environment
+
+```bash
 conda env create -f deepTools/environment.yml
+```
+
+This creates an environment called `deepTools` with Python 3.8, PyTorch 2.0, and all required dependencies.
+
+### Step 3: Activate and install
+
+```bash
 conda activate deepTools
 pip install -e .
 ```
 
-### Option B: pip only
+The `-e` (editable) flag links the package to the source directory, so code changes and `git pull` updates take effect immediately without reinstalling.
+
+### Step 4: Verify the installation
+
+```bash
+python -m deepTools.infer --help
+```
+
+### Alternative: pip only (without conda)
+
+If you prefer not to use conda, you can install directly with pip (a working PyTorch installation is required):
 
 ```bash
 git clone https://github.com/mauromaiorca/deepTools.git
@@ -28,16 +50,25 @@ cd deepTools
 pip install -e .
 ```
 
-### Install from GitHub directly (no clone)
+## Updating
+
+Since the package is installed in editable mode, updating is a single command:
 
 ```bash
-pip install git+https://github.com/mauromaiorca/deepTools.git
+cd deepTools
+git pull
 ```
 
-### Verify the installation
+New code changes apply immediately. If `environment.yml` has changed (new dependencies), also run:
 
 ```bash
-python -m deepTools.infer --help
+conda env update -f deepTools/environment.yml --prune
+```
+
+If `setup.py` has changed (new pip dependencies), also run:
+
+```bash
+pip install -e .
 ```
 
 ### Model files
